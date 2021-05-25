@@ -55,6 +55,7 @@ func NewPropertyAssignmentFromFunction(
 	conversionContext *PropertyConversionContext,
 ) (*PropertyAssignmentFunction, error) {
 	result := &PropertyAssignmentFunction{
+		name:                nameOfPropertyAssignmentFunction(otherDefinition.Name(), ConvertFrom, idFactory),
 		otherDefinition: otherDefinition,
 		idFactory:       idFactory,
 		direction:       ConvertFrom,
@@ -81,6 +82,7 @@ func NewPropertyAssignmentToFunction(
 	conversionContext *PropertyConversionContext,
 ) (*PropertyAssignmentFunction, error) {
 	result := &PropertyAssignmentFunction{
+		name:                nameOfPropertyAssignmentFunction(otherDefinition.Name(), ConvertTo, idFactory),
 		otherDefinition: otherDefinition,
 		idFactory:       idFactory,
 		direction:       ConvertTo,

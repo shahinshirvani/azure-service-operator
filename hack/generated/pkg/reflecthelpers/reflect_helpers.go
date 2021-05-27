@@ -38,6 +38,9 @@ func ConvertResourceToDeployableResource(
 
 	spec := specFieldPtr.Interface()
 
+
+
+
 	armTransformer, ok := spec.(genruntime.ARMTransformer)
 	if !ok {
 		return nil, errors.Errorf("spec was of type %T which doesn't implement genruntime.ArmTransformer", spec)

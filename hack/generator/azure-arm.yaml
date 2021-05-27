@@ -105,7 +105,7 @@ exportFilters:
     because: "including StorageAccount resource"
   - action: include-transitive
     group: microsoft.batch
-    version: v*api20170901
+    version: v*api*
     name: 'BatchAccount'
     because: "including BatchAccount resource"
   - action: include-transitive

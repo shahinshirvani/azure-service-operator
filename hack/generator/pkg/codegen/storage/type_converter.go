@@ -7,9 +7,11 @@ package storage
 
 import (
 	"fmt"
-	"github.com/Azure/azure-service-operator/hack/generator/pkg/astmodel"
+
 	"github.com/pkg/errors"
 	kerrors "k8s.io/apimachinery/pkg/util/errors"
+
+	"github.com/Azure/azure-service-operator/hack/generator/pkg/astmodel"
 )
 
 // TypeConverter is used to create a storage variant of an API type

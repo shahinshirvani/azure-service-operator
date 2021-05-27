@@ -45,4 +45,12 @@ var (
 
 	// Type names
 	ResourceReferenceTypeName = MakeTypeName(GenRuntimeReference, "ResourceReference")
+	ConvertibleInterface      = MakeTypeName(ControllerRuntimeConversion, "Convertible")
+	HubInterface              = MakeTypeName(ControllerRuntimeConversion, "Hub")
+	KnownResourceReferenceTypeName = MakeTypeName(GenRuntimeReference, "KnownResourceReference")
+	ToARMConverterInterfaceType = MakeTypeName(GenRuntimeReference, "ToARMConverter")
+
+	GroupVersionKindTypeName = MakeTypeName(APIMachinerySchemaReference, "GroupVersionKind")
+
+	SchemeType = MakeTypeName(APIMachineryRuntimeReference, "Scheme")
 )

@@ -152,11 +152,13 @@ func createAllPipelineStages(idFactory astmodel.IdentifierFactory, configuration
 		addCrossplaneEmbeddedResourceSpec(idFactory).UsedFor(CrossplaneTarget),
 		addCrossplaneEmbeddedResourceStatus(idFactory).UsedFor(CrossplaneTarget),
 
+		// Disable for Codegen-Alpha-0 release
 		createStorageTypes(idFactory).UsedFor(ARMTarget), // TODO: For now only used for ARM
 		simplifyDefinitions(),
 		injectJsonSerializationTests(idFactory).UsedFor(ARMTarget),
 
-		markStorageVersion(idFactory),
+		// Required for Codegen-Alpha-0 release
+		//markStorageVersion(idFactory),
 
 		// Safety checks at the end:
 		ensureDefinitionsDoNotUseAnyTypes(),

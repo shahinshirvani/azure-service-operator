@@ -229,6 +229,7 @@ func (f *StorageTypeFactory) injectConversions(definition astmodel.TypeDefinitio
 	knownTypes := make(astmodel.Types)
 	knownTypes.AddTypes(f.inputTypes.Except(f.outputTypes))
 	knownTypes.AddTypes(f.outputTypes)
+
 	conversionFromContext := conversions.NewStorageConversionContext(knownTypes, conversions.ConvertFrom, f.idFactory)
 	assignFromFn, err := conversions.NewPropertyAssignmentFromFunction(definition, nextDef, f.idFactory, conversionFromContext)
 	if err != nil {
@@ -241,25 +242,28 @@ func (f *StorageTypeFactory) injectConversions(definition astmodel.TypeDefinitio
 		return nil, errors.Wrapf(err, "creating PropertyAssignmentTo() function for %q", name)
 	}
 
-	definitionWithAssignmentFunctions, err := f.functionInjector.Inject(definition, assignToFn, assignFromFn)
+	result, err := f.functionInjector.Inject(definition, assignToFn, assignFromFn)
 	if err != nil {
 		return nil, errors.Wrapf(err, "failed to inject ConvertFrom and ConvertTo functions into %q", name)
 	}
 
-	// Work out the name of our hub type
-	// TODO: Make this work when types are renamed
-	// TODO: Make this work when types are discontinued
-	hubType := astmodel.MakeTypeName(f.hubPackage, name.Name())
+	if isResource {
 
-	convertFromFn := conversions.NewConversionFromHubFunction(hubType, assignFromFn.OtherType(), assignFromFn.Name(), f.idFactory)
-	convertToFn := conversions.NewConversionToHubFunction(hubType, assignToFn.OtherType(), assignToFn.Name(), f.idFactory)
+		// Work out the name of our hub type
+		// TODO: Make this work when types are renamed
+		// TODO: Make this work when types are discontinued
+		hubType := astmodel.MakeTypeName(f.hubPackage, name.Name())
 
-	hubImplementation := astmodel.NewInterfaceImplementation(astmodel.ConvertibleInterface, convertFromFn, convertToFn)
+		convertFromFn := conversions.NewConversionFromHubFunction(hubType, assignFromFn.OtherType(), assignFromFn.Name(), f.idFactory)
+		convertToFn := conversions.NewConversionToHubFunction(hubType, assignToFn.OtherType(), assignToFn.Name(), f.idFactory)
 
-	definitionWithHubInterface, err := f.implementationInjector.Inject(definitionWithAssignmentFunctions, hubImplementation)
-	if err != nil {
-		return nil, errors.Wrapf(err, "failed to inject conversion.Convertible interface into %q", name)
+		hubImplementation := astmodel.NewInterfaceImplementation(astmodel.ConvertibleInterface, convertFromFn, convertToFn)
+
+		result, err = f.implementationInjector.Inject(result, hubImplementation)
+		if err != nil {
+			return nil, errors.Wrapf(err, "failed to inject conversion.Convertible interface into %q", name)
+		}
 	}
 
-	return &definitionWithHubInterface, nil
+	return &result, nil
 }

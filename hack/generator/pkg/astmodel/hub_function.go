@@ -7,7 +7,7 @@ package astmodel
 
 import (
 	"fmt"
-
+	"github.com/Azure/azure-service-operator/hack/generator/pkg/astbuilder"
 	"github.com/dave/dst"
 
 	"github.com/Azure/azure-service-operator/hack/generator/pkg/astbuilder"

@@ -14,9 +14,8 @@ import (
 	"github.com/Azure/azure-service-operator/hack/generator/pkg/astmodel"
 )
 
-//nolint:deadcode // We need this for codegen-alpha-0
 // markStorageVersion creates a PipelineStage to mark a particular version as a storage version
-func markStorageVersion(idFactory astmodel.IdentifierFactory) PipelineStage {
+func markStorageVersion(idFactory astmodel.IdentifierFactory) PipelineStage { //nolint:deadcode,unused // We need this for codegen-alpha-0
 	return MakePipelineStage(
 		"markStorageVersion",
 		"Marking the latest version of each resource as the storage version",

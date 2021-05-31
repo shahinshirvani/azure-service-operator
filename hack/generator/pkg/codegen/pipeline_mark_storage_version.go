@@ -15,12 +15,12 @@ import (
 )
 
 // markStorageVersion creates a PipelineStage to mark a particular version as a storage version
-func markStorageVersion() PipelineStage {
+func markStorageVersion(idFactory astmodel.IdentifierFactory) PipelineStage {
 	return MakePipelineStage(
 		"markStorageVersion",
 		"Marking the latest version of each resource as the storage version",
 		func(ctx context.Context, types astmodel.Types) (astmodel.Types, error) {
-			updatedDefs, err := MarkLatestResourceVersionsForStorage(types)
+			updatedDefs, err := MarkLatestResourceVersionsForStorage(types, idFactory)
 			if err != nil {
 				return nil, errors.Wrapf(err, "unable to mark latest resource version as storage version")
 			}
@@ -30,7 +30,7 @@ func markStorageVersion() PipelineStage {
 }
 
 // MarkLatestResourceVersionsForStorage marks the latest version of each resource as the storage version
-func MarkLatestResourceVersionsForStorage(types astmodel.Types) (astmodel.Types, error) {
+func MarkLatestResourceVersionsForStorage(types astmodel.Types, idFactory astmodel.IdentifierFactory) (astmodel.Types, error) {
 
 	result := make(astmodel.Types)
 	resourceLookup, err := groupResourcesByVersion(types)
@@ -57,7 +57,7 @@ func MarkLatestResourceVersionsForStorage(types astmodel.Types) (astmodel.Types,
 			// mark as storage version if it's the latest version
 			isLatestVersion := thisPackagePath == latestPackagePath
 			if isLatestVersion {
-				def = astmodel.MakeTypeDefinition(def.Name(), resourceType.MarkAsStorageVersion()).
+				def = astmodel.MakeTypeDefinition(def.Name(), resourceType.MarkAsStorageVersion(idFactory)).
 					WithDescription(def.Description())
 			}
 		}

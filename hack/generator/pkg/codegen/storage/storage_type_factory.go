@@ -40,7 +40,7 @@ func NewStorageTypeFactory(group string, idFactory astmodel.IdentifierFactory) *
 		conversionMap:          make(map[astmodel.PackageReference]astmodel.PackageReference),
 		functionInjector:       NewFunctionInjector(),
 		implementationInjector: NewImplementationInjector(),
-		resourceHubMarker:      NewHubVersionMarker(),
+		resourceHubMarker:      NewHubVersionMarker(idFactory),
 		typeConverter:          NewTypeConverter(types),
 	}
 
@@ -209,12 +209,12 @@ func (f *StorageTypeFactory) injectConversions(definition astmodel.TypeDefinitio
 		// (this is expected if we have the hub storage package)
 		// Flag the type as needing to be flagged as the storage version
 		//TODO: Restore this - currently disabled until we get all the conversion functions injected
-		//hubDefintion, err := f.resourceHubMarker.markResourceAsStorageVersion(definition)
-		//if err != nil {
-		//	return nil, errors.Wrapf(err, "marking %q as hub version", name)
-		//}
-		//return &hubDefintion, nil
-		return nil, nil
+		hubDefinition, err := f.resourceHubMarker.MarkAsHubVersion(definition)
+		if err != nil {
+			return nil, errors.Wrapf(err, "marking %q as hub version", name)
+		}
+
+		return &hubDefinition, nil
 	}
 
 	nextName := astmodel.MakeTypeName(nextPackage, name.Name())

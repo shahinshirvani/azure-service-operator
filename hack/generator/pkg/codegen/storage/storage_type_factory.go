@@ -232,14 +232,13 @@ func (f *StorageTypeFactory) injectConversions(definition astmodel.TypeDefinitio
 	knownTypes.AddTypes(f.inputTypes.Except(f.outputTypes))
 	knownTypes.AddTypes(f.outputTypes)
 
-	conversionFromContext := conversions.NewStorageConversionContext(knownTypes, conversions.ConvertFrom, f.idFactory)
-	assignFromFn, err := conversions.NewPropertyAssignmentFromFunction(definition, nextDef, f.idFactory, conversionFromContext)
+	conversionContext := conversions.NewStorageConversionContext(knownTypes, f.idFactory)
+	assignFromFn, err := conversions.NewPropertyAssignmentFromFunction(definition, nextDef, f.idFactory, conversionContext)
 	if err != nil {
 		return nil, errors.Wrapf(err, "creating PropertyAssignmentFrom() function for %q", name)
 	}
 
-	conversionToContext := conversions.NewStorageConversionContext(knownTypes, conversions.ConvertTo, f.idFactory)
-	assignToFn, err := conversions.NewPropertyAssignmentToFunction(definition, nextDef, f.idFactory, conversionToContext)
+	assignToFn, err := conversions.NewPropertyAssignmentToFunction(definition, nextDef, f.idFactory, conversionContext)
 	if err != nil {
 		return nil, errors.Wrapf(err, "creating PropertyAssignmentTo() function for %q", name)
 	}

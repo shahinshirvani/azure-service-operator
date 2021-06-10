@@ -60,7 +60,9 @@ func NewPropertyAssignmentFromFunction(
 		knownLocals:     astmodel.NewKnownLocalsSet(idFactory),
 	}
 
-	result.conversionContext = conversionContext.WithFunctionName(result.Name()).WithKnownLocals(result.knownLocals)
+	result.conversionContext = conversionContext.WithFunctionName(result.Name()).
+		WithKnownLocals(result.knownLocals).
+		WithDirection(ConvertFrom)
 
 	err := result.createConversions(receiver)
 	if err != nil {
@@ -85,7 +87,9 @@ func NewPropertyAssignmentToFunction(
 		knownLocals:     astmodel.NewKnownLocalsSet(idFactory),
 	}
 
-	result.conversionContext = conversionContext.WithFunctionName(result.Name()).WithKnownLocals(result.knownLocals)
+	result.conversionContext = conversionContext.WithFunctionName(result.Name()).
+		WithKnownLocals(result.knownLocals).
+		WithDirection(ConvertTo)
 
 	err := result.createConversions(receiver)
 	if err != nil {

@@ -45,7 +45,7 @@ func ExportPackages(outputPath string) Stage {
 // CreatePackagesForDefinitions groups type definitions into packages
 func CreatePackagesForDefinitions(definitions astmodel.Types) (map[astmodel.PackageReference]*astmodel.PackageDefinition, error) {
 
-	genVersion := combinedVersion()
+	genVersion := CombinedVersion()
 	packages := make(map[astmodel.PackageReference]*astmodel.PackageDefinition)
 	for _, def := range definitions {
 		defName := def.Name()

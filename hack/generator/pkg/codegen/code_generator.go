@@ -163,7 +163,7 @@ func createAllPipelineStages(idFactory astmodel.IdentifierFactory, configuration
 
 // Generate produces the Go code corresponding to the configured JSON schema in the given output folder
 func (generator *CodeGenerator) Generate(ctx context.Context) error {
-	klog.V(1).Infof("Generator version: %v", pipeline.combinedVersion())
+	klog.V(1).Infof("Generator version: %v", pipeline.CombinedVersion())
 
 	defs := make(astmodel.Types)
 	for i, stage := range generator.pipeline {

@@ -15,7 +15,7 @@ var (
 	GitTreeState string
 )
 
-func combinedVersion() string {
+func CombinedVersion() string {
 	result := GitCommit
 	if GitTreeState != "clean" {
 		result += fmt.Sprintf(" (tree is %s)", GitTreeState)

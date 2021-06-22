@@ -138,3 +138,9 @@ func (stage *Stage) CheckPrerequisites(priorStages map[string]struct{}) error {
 func (stage *Stage) Postrequisites() []string {
 	return stage.postrequisites
 }
+
+// Targets returns the targets this stage should be used for
+// If no targets are returned, this stage should always be used
+func (stage *Stage) Targets() []Target {
+	return stage.targets
+}

@@ -3,7 +3,7 @@
  * Licensed under the MIT license.
  */
 
-package codegen
+package pipeline
 
 import (
 	"context"
@@ -14,7 +14,6 @@ import (
 	"k8s.io/klog/v2"
 
 	"github.com/Azure/azure-service-operator/hack/generator/pkg/astmodel"
-	"github.com/Azure/azure-service-operator/hack/generator/pkg/codegen/pipeline"
 	"github.com/Azure/azure-service-operator/hack/generator/pkg/config"
 )
 
@@ -22,11 +21,11 @@ var armIDDescriptionRegex = regexp.MustCompile("(?i).*/subscriptions/.*?/resourc
 
 // TODO: For now not supporting array or map of references. Unsure if it actually ever happens in practice.
 
-// addCrossResourceReferences replaces cross resource references with genruntime.ResourceReference.
-func addCrossResourceReferences(configuration *config.Configuration, idFactory astmodel.IdentifierFactory) pipeline.Stage {
-	return pipeline.MakeStage(
+// AddCrossResourceReferences replaces cross resource references with genruntime.ResourceReference.
+func AddCrossResourceReferences(configuration *config.Configuration, idFactory astmodel.IdentifierFactory) Stage {
+	return MakeStage(
 		"addCrossResourceReferences",
-		"Replaces cross resource references with genruntime.ResourceReference",
+		"Replace cross-resource references with genruntime.ResourceReference",
 		func(ctx context.Context, definitions astmodel.Types) (astmodel.Types, error) {
 
 			result := make(astmodel.Types)
